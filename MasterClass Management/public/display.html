@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Enrollments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="date"],
+        button {
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background-color: #fff;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+    <script>
+        function unenroll(id) {
+        fetch(`/unenroll/${id}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Record successfully unenrolled');
+                // Optionally, remove the row from the table
+                document.getElementById(`row-${id}`).remove();
+            } else {
+                alert('Failed to unenroll. Please try again later.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to unenroll. Please try again later.');
+        });
+    }
+
+        function searchEnrollments(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const dob = document.getElementById('dob').value;
+
+            fetch('/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, dob })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('resultsTableBody');
+                tableBody.innerHTML = '';
+
+                if (data.length > 0) {
+                    data.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.id = `row-${row.id}`;
+    tr.innerHTML = `
+        <td>${row.name}</td>
+        <td>${row.age}</td>
+        <td>${new Date(row.dob).toISOString().split('T')[0]}</td>
+        <td>${row.sex}</td>
+        <td>${row.phone}</td>
+        <td>${row.course}</td>
+        <td><button onclick="unenroll(${row.id})">Unenroll</button></td>
+    `;
+    tableBody.appendChild(tr);
+});
+                } else {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = '<td colspan="6">No results found</td>';
+                    tableBody.appendChild(tr);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to search. Please try again later.');
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Search Enrollments</h1>
+    <form onsubmit="searchEnrollments(event)">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob"><br>
+
+        <button type="submit">Search</button>
+    </form>
+
+    <h2>Results</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Date of Birth</th>
+                <th>Sex</th>
+                <th>Phone</th>
+                <th>Course</th>
+            </tr>
+        </thead>
+        <tbody id="resultsTableBody">
+            <!-- Results will be inserted here -->
+        </tbody>
+    </table>
+</body>
+</html>

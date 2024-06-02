@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #2196F3;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0b7dda;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button-container button {
+            width: 48%;
+        }
+   
+    </style>
+</head>
+<body>
+    <h1>Enroll Form</h1>
+    <form id="enrollmentForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required><br><br>
+
+        <label for="sex">Sex:</label>
+        <select id="sex" name="sex" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select><br><br>
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required><br><br>
+
+        <label for="courseSelect">Select Course:</label>
+        <select id="courseSelect" name="course" required>
+            <option value="Java">Java</option>
+            <option value="DBMS">DBMS</option>
+            <option value="C">C</option>
+            <option value="Python">Python</option>
+            <option value="Cooking Basics">Cooking Basics</option>
+            <option value="Baking">Baking</option>
+            <option value="Drawing">Drawing</option>
+            <option value="Dancing">Dancing</option>
+        </select><br><br>
+
+        <button type="submit">Enroll</button>
+    </form>
+
+
+    <script>
+        document.getElementById('courseSelect').addEventListener('change', function() {
+            let selectedCourse = document.getElementById('courseSelect').value;
+            console.log(selectedCourse);
+            //document.getElementById('course').value = selectedCourse;
+        });
+
+        document.getElementById('enrollmentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const enrollmentData = {
+                name: document.getElementById('name').value,
+                age: parseInt(document.getElementById('age').value, 10),
+                dob: document.getElementById('dob').value,
+                sex: document.getElementById('sex').value,
+                phone: document.getElementById('phone').value,
+                course: document.getElementById('courseSelect').value
+            };
+
+            fetch('/enroll', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(enrollmentData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => { throw new Error(error.message); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                    alert(data.message);
+                    if (data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                    }
+                })
+            .catch(error => {
+                console.error('Error1:', error.message);
+                alert('Failed to enroll. Please try again later.');
+            });
+        });
+
+        // Initialize the course field with the default selected course
+        document.getElementById('course').value = document.getElementById('courseSelect').value;
+        function unenroll() {
+            const form = document.getElementById('enrollForm');
+            const formData = new FormData(form);
+            const course = formData.get('course');
+    
+            fetch(`/unenroll/${course}`, { // Make sure `course` is defined and contains the correct value
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name: formData.get('name') })
+})
+
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                // Redirect to another page or update UI as needed
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to unenroll.');
+            });
+        }
+        // Initialize the course field with the default selected course
+        //document.getElementById('course').value = document.getElementById('courseSelect').value;
+
+    </script>
+</body>
+</html>
+        

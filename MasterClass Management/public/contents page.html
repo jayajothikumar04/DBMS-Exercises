@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    <style>
+        .course {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+        .course-details {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+        }
+        .enroll-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .unenroll-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 3px;
+            cursor: pointer;
+        }    
+        .enroll-form-btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="course" id="java">
+        <h2>Java</h2>
+        <p>A course on Java programming language.</p>
+        <button class="enroll-btn" onclick="showDetails('java')">Enroll</button>
+        <button class="unenroll-btn">Unenroll</button>
+        <button class="enroll-form-btn" onclick="window.location.href='/enroll'">Enroll Form</button>
+        <div class="course-details" id="java-details">
+            <h3>Contents</h3>
+            <ul>
+                <li>Introduction to Java</li>
+                <li>Java Syntax</li>
+                <li>Object-Oriented Programming in Java</li>
+                <li>Java Collections Framework</li>
+                <li>Java Database Connectivity (JDBC)</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="course" id="dbms">
+        <h2>DBMS (Database Management System)</h2>
+        <p>A course on database management systems.</p>
+        <button class="enroll-btn" onclick="showDetails('dbms')">Enroll</button>
+        <button class="unenroll-btn">Unenroll</button>
+        <button class="enroll-form-btn" onclick="redirectToEnrollForm()">Enroll Form</button>
+        <div class="course-details" id="dbms-details">
+            <h3>Contents</h3>
+            <ul>
+                <li>Introduction to DBMS</li>
+                <li>Relational Database Concepts</li>
+                <li>SQL (Structured Query Language)</li>
+                <li>Database Design</li>
+                <li>Normalization and Optimization</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="course" id="c">
+        <h2>C Programming</h2>
+        <p>A course on C programming language.</p>
+        <button class="enroll-btn" onclick="showDetails('c')">Enroll</button>
+        <button class="unenroll-btn">Unenroll</button>
+        <button class="enroll-form-btn" onclick="redirectToEnrollForm()">Enroll Form</button>
+        <div class="course-details" id="c-details">
+            <h3>Contents</h3>
+            <ul>
+                <li>Introduction to C</li>
+                <li>C Syntax and Data Types</li>
+                <li>Control Flow in C</li>
+                <li>Functions and Pointers</li>
+                <li>File Handling in C</li>
+            </ul>
+        </div>
+    </div>
+    <div class="course" id="python">
+        <h2>python</h2>
+        <p>A course on python  programming language.</p>
+        <button class="enroll-btn" onclick="showDetails('python')">Enroll</button>
+        <button class="unenroll-btn">Unenroll</button>
+        <button class="enroll-form-btn" onclick="redirectToEnrollForm()">Enroll Form</button>
+        <div class="course-details" id="python-details">
+            <h3>Contents</h3>
+            <ul>
+                <li>Introduction to python</li>
+                <li>python Syntax and Data Types</li>
+                <li>Advanced Python Libraries </li>
+                <li>web Development with Python</li>
+                <li>Data Science and Machine Learning with Python</li>
+            </ul>
+        </div>
+    </div>
+    <div class="course" id="cooking">
+        <h2>Cooking Basics</h2>
+        <p>A course on culinary arts .</p>
+        <button class="enroll-btn" onclick="showDetails('cooking')">Enroll</button>
+        <button class="unenroll-btn">Unenroll</button>
+        <button class="enroll-form-btn" onclick="redirectToEnrollForm()">Enroll Form</button>
+        <div class="course-details" id="cooking-details">
+            <h3>Contents</h3>
+            <ul>
+                <li>Knife Skills</li>
+                <li>Basic Cooking Techniques </li>
+                <li>Understanding Ingredients</li>
+                <li>Food Safety and Hygiene</li>
+                <li>Simple Recipes for Beginners</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="course" id="baking">
+        <h2>Baking</h2>
+        <p>A course on baking and types.</p>
+        <button class="enroll-btn" onclick="showDetails('baking')">Enroll</button>
+        <button class="unenroll-btn">Unenroll</button>
+        <button class="enroll-form-btn" onclick="redirectToEnrollForm()">Enroll Form</button>
+        <div     class="course-details" id="baking-details">
+            <h3>Contents</h3>
+            <ul>
+                <li>Introduction to Baking</li>
+                <li>Baking Equipment and Tools</li>
+                <li>Types of Flour and Sugar</li>
+                <li>Basic Baking Techniques</li>
+                <li>Recipes for Cakes, Cookies, and Breads</li>
+            </ul>
+        </div>
+    </div>
+    <div class="course" id="drawing">
+        <h2>Drawing</h2>
+        <p>A course on drawing.</p>
+        <button class="enroll-btn" onclick="showDetails('drawing')">Enroll</button>
+        <button class="unenroll-btn">Unenroll</button>
+        <button class="enroll-form-btn" onclick="redirectToEnrollForm()">Enroll Form</button>
+        <div class="course-details" id="drawing-details">
+            <h3>Contents</h3>
+            <ul>
+                <li>Basic Drawing Techniques</li>
+                <li>Understanding Light and Shadow</li>
+                <li>Composition and Perspective</li>
+                <li>Sketching Exercises</li>
+                <li>Drawing from Observation</li>
+            </ul>
+        </div>
+    </div>
+    <div class="course" id="dancing">
+        <h2>Dancing</h2>
+        <p>A course on dancing and types.</p>
+        <button class="enroll-btn" onclick="showDetails('dancing')">Enroll</button>
+        <button class="unenroll-btn">Unenroll</button>
+        <button class="enroll-form-btn" onclick="redirectToEnrollForm()">Enroll Form</button>
+        <div class="course-details" id="dancing-details">
+            <h3>Contents</h3>
+            <ul>
+                <li>Introduction to Dance</li>
+                <li>Popular Dance Styles </li>
+                <li>Dance Techniques</li>
+                <li>Choreography Basics</li>
+                <li>Dance Routines</li>
+            </ul>
+        </div>
+    </div>
+    <div id="enroll" style="display: none;">
+        <h2>Enrollment Form</h2>
+        <form action="/enroll" method="GET">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="age">Age:</label><br>
+            <input type="number" id="age" name="age" required><br>
+
+            <label for="dob">Date of Birth:</label><br>
+            <input type="date" id="dob" name="dob" required><br>
+
+            <label for="sex">Sex:</label><br>
+            <select id="sex" name="sex" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select><br>
+
+            <label for="phone">Phone:</label><br>
+            <input type="tel" id="phone" name="phone" required><br>
+
+            <input type="hidden" id="course" name="course" value=""><!-- This will be filled dynamically via JavaScript -->
+            
+            <button type="submit">Enroll</button>
+        </form>
+    </div>
+    <script>
+         function showDetails(courseId) {
+            var details = document.getElementById(courseId + "-details");
+            details.style.display = "block";
+            var enrollBtn = document.getElementById(courseId + "-enroll-btn");
+            enrollBtn.style.display = "none";
+        }
+
+        //function redirectToEnrollForm() {
+            //window.location.href = '/enroll';
+        //}
+    </script>
+</body>
+</html>

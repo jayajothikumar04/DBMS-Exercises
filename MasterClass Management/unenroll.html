@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags, title, and styles -->
+    <style>
+        #unenroll {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Course sections with enroll and unenroll buttons -->
+    
+    <!-- Unenrollment form for each course -->
+    <div class="course" id="unenroll">
+        <h2>Unenroll Form</h2>
+        <form id="unenrollForm">
+            <label for="course">Course:</label><br>
+            <input type="text" id="course" name="course" readonly><br>
+            <input type="hidden" id="userId" name="userId" value="USER_ID"><!-- Assuming USER_ID is set dynamically -->
+            <button type="button" onclick="unenroll()">Unenroll</button>
+        </form>
+    </div>
+
+    <!-- JavaScript to handle showing the unenrollment form -->
+    <script>
+        function showUnenrollForm(courseId) {
+            var unenrollForm = document.getElementById('unenroll');
+            var courseInput = unenrollForm.querySelector('#course');
+            courseInput.value = courseId;
+            unenrollForm.style.display = 'block';
+        }
+
+        function unenroll() {
+            var course = document.getElementById('course').value;
+            var userId = document.getElementById('userId').value;
+
+            fetch(`/unenroll/${course}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId: userId })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to unenroll');
+                }
+                alert('Unenrollment successful!');
+                document.getElementById('unenrollForm').reset();
+                document.getElementById('unenroll').style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to unenroll');
+            });
+        }
+    </script>
+</body>
+</html>

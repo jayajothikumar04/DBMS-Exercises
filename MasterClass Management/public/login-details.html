@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Form</title>
+    <style>
+        body {
+            background-color: lavenderblush;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: rgb(65, 38, 47);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .login-container label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 200px;
+            padding: 5px;
+            border: none;
+            background-color: white;
+            border-radius: 5px;
+        }
+        .login-container input[type="submit"] {
+            padding: 5px 20px;
+            background-color: #fff;
+            color: purple;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .login-container input[type="submit"]:hover {
+            background-color: #f1f1f1;
+        }
+        .login-container button {
+            padding: 5px 20px;
+            background-color: #fff;
+            color: purple;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .login-container button:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login Form</h2>
+        <form id="loginForm" onsubmit="return login(event)">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username"><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"><br><br>
+            <input type="submit" value="Login">
+            <button type="button" onclick="signup()">Sign Up</button>
+            <button type="button" onclick="forgotPassword()">Forgot Password</button>
+        </form>
+    </div>
+
+    <script>
+        function login(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Validate input
+            if (!username || !password) {
+                alert("Username and password are required.");
+                return;
+            }
+
+            // Create a new request to validate login
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/login', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Assuming the server returns a success response
+                    window.location.href = "contents page.html";
+                } else {
+                    alert("Invalid username or password.");
+                }
+            };
+
+            // Send the request with the username and password
+            xhr.send(JSON.stringify({ username, password }));
+        }
+
+        function signup() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Validate input
+            if (!username || !password) {
+                alert("Username and password are required.");
+                return;
+            }
+
+            // Create a new request to update the database
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/signup', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Assuming the server returns a success response
+                    window.location.href = "contents page.html";
+                } else {
+                    alert("Signup failed. Try again.");
+                }
+            };
+
+            // Send the request with the username and password
+            xhr.send(JSON.stringify({ username, password }));
+        }
+
+        function forgotPassword() {
+            const username = document.getElementById('username').value;
+
+            // Validate input
+            if (!username) {
+                alert("Username is required.");
+                return;
+            }
+
+            const newPassword = prompt("Please enter your new password:");
+
+            if (!newPassword) {
+                alert("New password is required.");
+                return;
+            }
+
+            // Create a new request to handle forgot password logic
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/forget-password', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    alert("Password has been reset successfully.");
+                } else {
+                    alert("Password reset failed. Try again.");
+                }
+            };
+
+            // Send the request with the username and new password
+            xhr.send(JSON.stringify({ username, newPassword }));
+
+            // Clear the form fields
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+    </script>
+</body>
+</html>
